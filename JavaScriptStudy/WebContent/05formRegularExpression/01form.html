@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트 정규표현식을 사용한 폼 유효성 검사</title>
+
+<style>
+
+	body {
+		
+		margin: 0;
+		padding: o;
+		font-family: Arial, "MS Trebuchet", sans-serif;
+		word-break: break-all; 
+	}
+	
+	#container {
+		/*border: solid 1px blue;*/
+		width: 80%;
+		margin: 0 auto;
+	}
+	
+	legend {
+		font-size: 20pt;
+	}
+	
+	ul {
+		list-style-type: none;
+		padding: 0;
+	}
+	
+	ul > li {
+		line-height: 40px;
+	}
+	
+	label.title {
+		display: inline-block;
+		width: 100px;
+		color: navy;
+		font-weight: bolder;
+	}
+	
+	input.myinput {
+		height: 20px;
+	}
+	
+	select {
+		width: 150px;
+	}
+	
+	.myselect {
+		height: 25px;
+	}
+	
+	input.btn {
+		width: 100px;
+		height: 40px;
+		background-color: #000;
+		color: #fff;
+		font-size: 16pt;
+		border: none;
+		margin:20px 0 0 40px; 	/* 상 우 하 좌 */
+	}
+</style>
+
+<script type="text/javascript">
+	//자바스크립트에서 현재 날짜 시각을 알려주는 것이다.
+	var now = new Date();
+	var currentYear = now.getFullYear();	
+	
+	window.onload = function() {
+		var sOption = "<option>출생년도</option>";
+		for(var i=0; i<(currentYear-1950+1); i++){
+			sOption += "<option>"+ (1950+i) + "</option>";
+		}
+		
+		document.getElementById("birthYear").innerHTML = sOption;
+		document.getElementById("birthYear2").innerHTML = sOption;
+		
+		var birthYear = document.getElementById("birthYear");
+		var result;
+		birthYear.addEventListener("change", function() {
+			result = this.value;
+			// NaN => Not a Number
+			// isNaN(값) : 값이 숫자가 아니면 true, 숫자이면 false
+			var bool = isNaN(Number(this.value));
+			
+			// 숫자가 아니라면!
+			if(bool){
+				alert("태어나신 년도를 선택해주세요");
+				document.getElementById("age").innerHTML = "";
+			}
+			else {
+				document.getElementById("age").innerHTML = currentYear - result + 1;
+			}
+		});
+		
+
+	}
+	
+	// onclick을 통해 function으로 하면 this를 매개변수로 전달해주지 않으면 사용할 수 없으므로 매개변수로 주어야 한다.
+	function goAge(self) {
+		var result;
+		result = self.value;
+		var bool = isNaN(Number(self.value));
+			
+		// 숫자가 아니라면!
+		if(bool){
+			alert("태어나신 년도를 선택해주세요");
+			document.getElementById("age").innerHTML = "";
+		}
+		else {
+			document.getElementById("age").innerHTML = currentYear - result + 1;
+		}
+	}
+	
+	// 유효성 검사 함수
+	function goSubmit() {
+		
+		var frm = document.registerFrm;	// 문서에서 name의 값이 registerFrm인 태그를 잡는 것이다. 
+		
+		// 1. 사용자 id는 필수 입력사항이므로 반드시 값을 입력해야 한다. 
+		// frm.반드시name값이 와야 한다.
+		var useridVal = frm.userid.value; 
+		if(useridVal.trim().length == 0){
+			alert("아이디는 필수 입력사항입니다. 아이디를 입력하세요!");
+			frm.userid.value="";
+			frm.userid.focus();
+			return;	// 함수 종료
+		}
+		
+		// 2. 암호는 필수 입력사항이므로 반드시 값을 입력해야 한다. 
+		var passwd1val = frm.passwd1.value;
+		if(passwd1val.trim().length == 0){
+			alert("비밀번호는 필수 입력사항입니다. 비밀번호를 입력하세요!");
+			frm.passwd1.value="";
+			frm.passwd1.focus();
+			return;
+		}
+		
+		// 3. 비밀번호 확인 
+		// 비밀번호란에서 이미 db에 전송 시켰으므로 비밀번호 확인에서는 name 속성을 적어주면 안된다. 그러므로 id값으로 가져와야 한다.
+		var passwd2val = document.getElementById("passwd2").value; 
+			if(passwd1val != passwd2val){
+				alert("비밀번호가 일치하지 않습니다. 다시 입력해주세요.");
+				frm.passwd1.value="";
+				document.getElementById("passwd2").value="";
+				frm.passwd1.focus();				
+				return;
+			}
+		
+		// 4. 성명
+		var nameval = frm.name.value;
+		if(nameval.trim().length == 0){
+			alert("성명은 필수 입력사항입니다. 성명을 입력하세요!");
+			frm.name.value="";
+			frm.name.focus();
+			return;
+		}
+		
+		// 5. 이메일
+		var emailval = frm.email.value;
+		if(emailval.trim().length == 0){
+			alert("이메일은 필수 입력사항입니다. 이메일을 입력하세요!");
+			frm.email.value="";
+			frm.email.focus();
+			return;
+		}
+		
+		// 6. 성별(라디오 버튼을 선택했는지 안했는지 검사)
+		var arrGender = frm.gender;
+		var flag = "";
+		
+		for(var i=0; i<arrGender.length; i++){
+			flag = false;
+			var bool = arrGender[i].checked;
+			if(bool){
+				flag = true;
+				break;
+			}
+		}
+		
+		if(!flag){
+			alert("성별은 필수 입력사항입니다. 성별을 입력해주세요!");
+			return;
+		}
+		
+		// 7. 취미를 2개 이상 선택했는지 검사하기
+		var arrhobby = frm.hobby;
+		var cnt = 0;
+
+		for(var i=0; i<arrhobby.length; i++){
+			if(arrhobby[i].checked){
+				cnt++;
+			}
+		}
+		
+		if(cnt < 2){
+			alert("취미는 2개 이상 선택해주셔야 합니다. 다시 선택해주세요!");
+			return;
+		}
+		
+		// 8. 출생년도를 선택했는지 검사하기
+		var valbirthYear = frm.birthYear.value;
+		if(isNaN(valbirthYear)){
+			alert("출생년도는 필수 입력값입니다. 다시 선택해주세요.");
+			return;
+		}
+		
+		// 9. 최종학력을 선택했는지 검사하기
+		var valschool = frm.school.value;
+		if(isNaN(valschool)){
+			alert("최종학력을 올바르게 선택해주세요.");
+			return;
+		}
+		
+		// 10. 가입인사말을 입력했는지 검사하기
+		var valregisterComment = frm.registerComment.value;
+		if(valregisterComment.trim() == ""){
+			alert("가입인사말은 필수 항목입니다. 다시 입력해주세요 .");
+			frm.registerComment.value="";
+			frm.registerComment.focus();
+			return;
+		}
+		
+		frm.action = "register.do";	// form 태그에 담겨진 데이터를 전송하면 받아서 처리해주는 url 주소
+		frm.method = "post";		// form 태그에서 method를 지정하지 않으면 즉, 생략하면 기본은 "GET"방식이 된다.
+		/*
+	      form 태그에서 사용하는  method 는 2가지가 있는데 get 과 post 가 있다.
+	      get 은 전송하고자 하는 데이터를 웹브라우저 주소창에 실어서 보내는 방식이고, post 는 전송하고자 하는 데이터를 본문속에 감추어서 보내는 방식이다.
+	            그래서 get 은 보안성이 떨어지는 반면에 속도는 post 보다 빠르다.
+	      post는 보안성은 좋지만 속도는 get 보다는 느린편이다.
+	            그러므로 외부에 공개해서는 안되는 작업인 회원가입, 물품구매, 회원수정 등 DML(insert, update, delete)작업은  일반적으로 post 방식으로 하고, 
+	            외부에 공개하더라도 전혀 무관한 데이터 검색(예: 물품조회, 게시판글 검색)인 select 작업은 일반적으로 get 방식으로 한다.
+	      method 를 기재하지 않으면 get 방식이다. 
+	   */
+	   /* 
+	      == !!! 중요 !!! ==
+	            파일첨부가 있을 경우에는
+	      form name="registerFrm" action="register.do" method="post" 와 같이해주면 파일은 절대로 전송이 안되어진다.
+	      form name="registerFrm" action="register.do" method="post" enctype="multipart/form-data"로 해야만 파일이 전송 되어진다. 
+	            또한 파일을 첨부하려면 반드시 method="post" 이어야만 한다.!!!
+	   */
+	   
+		frm.submit();				// 전송하기
+		
+	}
+	
+</script>
+</head>
+<body>
+	<div id="container">
+		<!-- form name="registerFrm" action="register.do" method="post" enctype="multipart/form-data"로 해야만 파일이 전송 되어진다. -->
+		<form name="registerFrm" enctype="multipart/form-data>
+		<fieldset>
+			<legend>회원가입정보</legend>
+			
+			<ul>
+				<li>
+					<!-- name은 데이터를 전송하기 위해 반드시 적어줘야 하며, 보통 name 명은 table 컬럼 명과 동일하게 작성해준다. -->
+					<label for="userid" class="title">아이디</label>
+					<input type="text" name="userid" id="userid" class="myinput" size="20" maxlength="20" autofocus required />
+				</li>
+				<li>
+					<label for="passwd1" class="title">암호</label>
+					<input type="password" name="passwd1" id="passwd1" class="myinput" size="20" maxlength="20" required />
+				</li>
+				<li>
+					<label for="passwd2" class="title">암호확인</label>
+					<input type="password" id="passwd2" class="myinput" size="20" maxlength="20" required/>
+				</li>
+				<li>
+					<label for="name" class="title">성명</label>
+					<input type="text" id="name" name="name" size="20" maxlength="20" required class="myinput"/>
+				</li>
+				<li>
+					<label for="email" class="title">이메일</label>
+					<input type="email" id="email" name="email" class="myinput" size="20" maxlength="40" required placeholder="예: hongkd@gmail.com"/>
+				</li>
+				<li>
+					<label class="title">성별</label>
+					<!-- 라디오는 반드시 하나만 선택하는데 name이 같을때에만 한개만 선택 가능하다. -->
+					<!-- 라디오 버튼과 체크 박스는 값을 전달하기 위해 반드시 value값을 넣어줘야 한다. -->
+					<label for="gender">남자</label>
+					<input type="radio" name="gender" id="male" value="1"/>
+					<label for="radio">여자</label>
+					<input type="radio" name="gender" id="female" value="2"/>
+				</li>
+				<li>
+					<!-- 체크 박스와 라디오 박스는 name의 값을 설정해줘야 하고 이 name값은 항목들이 꼭 같아야 한다. -->
+					<label class="title">취미</label>
+					<label for="hobby1">게임</label> <input type="checkbox" name="hobby" id="hobby1" value="1" checked>&nbsp;&nbsp;
+					<label for="hobby2">영화감상</label> <input type="checkbox" name="hobby" id="hobby2" value="2">&nbsp;&nbsp;
+					<label for="hobby3">글쓰기</label> <input type="checkbox" name="hobby" id="hobby3" value="3" checked>&nbsp;&nbsp;
+					<label for="hobby4">음악감상</label> <input type="checkbox" name="hobby" id="hobby4" value="4">
+				</li>
+				<li>
+					<label class="title">출생년도</label>
+					<select class="myselect" name="birthYear" id="birthYear"></select>
+					<select class="myselect" name="birthYear2" id="birthYear2" onchange="goAge(this)"></select>
+				</li>
+				<li>
+					<label class="title">현재나이</label>
+					<span style="font-size: 12pt; color: red;" id="age"></span>세
+				</li>
+				<li>
+					<!-- input 태그가 없으면 for는 필요 없다. -->
+					<label class="title">최종학력</label>
+					<select class="myselect" name="school">
+						<!-- option에 value값을 넣어주지 않으면 "학력선택"이 value값으로 들어간다. -->
+						<option>학력선택</option>
+						<option value="1">고졸</option>
+						<option value="2" selected>초대졸</option>
+						<option value="3">대졸</option>
+						<option value="4">대학원졸</option>
+					</select>
+				</li>
+				<li>
+					<label for="addFile" class="title">파일첨부</label>
+					<input type="file" id="addFile"/>
+				</li>
+				<li>
+					<label for="registerComment"class="title">가입인사말</label> 
+					<textarea rows="5" cols="30" id="registerComment" name="registerComment"></textarea>
+				</li>
+				<li>
+					<input type="button" class="btn" value="확인" onclick="goSubmit()"/>
+					<input type="reset" class="btn" value="취소"/>
+				</li>
+			</ul>
+		</fieldset>	
+		</form>
+	</div>
+</body>
+</html>

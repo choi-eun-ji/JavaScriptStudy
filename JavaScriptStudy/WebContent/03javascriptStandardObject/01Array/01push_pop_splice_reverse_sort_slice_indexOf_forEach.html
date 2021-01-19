@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>자바스크립트 배열</title>
+
+<style type="text/css">
+   body {
+      padding: 20px;
+   }
+   
+   div.display {
+      display: inline-block;
+      border: solid 1px gray;
+      width: 15%;
+      margin: 10px;
+   }
+</style>
+ 
+<script type="text/javascript">
+	window.onload = function() {
+		
+		// 배열의 첫번째 버전
+		// 1. 자바 스크립트에서 배열을 아래와 같이 나타낸다.
+		var arrFruit1 = new Array();	// 배열도 객체이다.
+		arrFruit1.push("사과");	// 배열명.push() : 배열의 마지막에 새로운 요소를 추가한 후, 변경된 배열의 길이를 반환해줌. 
+		arrFruit1.push("딸기");	
+		arrFruit1.push("메론");
+		arrFruit1.push("참외");
+		var arrFruit1_length = arrFruit1.push("수박");
+		
+		console.log("1. arrFruit1 배열의 길이 => " + arrFruit1.length);
+		console.log("2. 변수 arrFruit1_length => " + arrFruit1_length);
+		
+		var html = "<ol>";
+		for(var i=0; i<arrFruit1.length; i++){
+			html += "<li>" + arrFruit1[i] + "</li>";
+		}
+		html += "</ol>";
+		
+		document.getElementById("fruitDisplay1").innerHTML = html;
+		
+		
+		//----------------------------------------------------------------------------------------
+		// 배열의 두번째 버전
+		var arrFruit2 = ["사과", "딸기", "메론", "참외", "수박"];
+		
+		html = "<ol>";
+		for(var i=0; i<arrFruit2.length; i++){
+			html += "<li>" + arrFruit2[i] + "</li>";
+		}
+		html += "</ol>";
+		
+		document.getElementById("fruitDisplay2").innerHTML = html;
+		
+		
+		// 배열에 있는 내용을 특정 엘리먼트속에 보여주는 함수
+		// window.onload 안에 함수를 넣고 싶을때는 변수안에 함수를 넣어준다.
+		var func_display2 = function(arr, displayid) {
+			var html = "<ol>";
+			for(var i=0; i<arr.length; i++){
+				html += "<li>" + arr[i] + "</li>";
+			}
+			html += "</ol>";
+			
+			displayid.innerHTML = html;
+		};
+		
+		
+		//----------------------------------------------------------------------------------------
+		// 배열의 맨 마지막에 과일을 추가하기
+		var btnLastAdd = document.getElementById("btnLastAdd");
+		
+		btnLastAdd.addEventListener('click', function(){
+			
+			// input 태그에서 입력되어지는값은 innerText가 아니라 value값이다.
+			var addVal = document.getElementById("addVal").value;
+			
+			if(addVal.trim() == ""){
+				alert("과일명을 입력하세요.");
+				return;	// 이 function을 종료하겠다는 의미!
+			}
+			else {
+				// 배열명.push() : 배열의 마지막에 새로운 요소를 추가한 후, 변경된 배열의 길이를 반환해줌.
+				arrFruit1.push(addVal.trim());
+				func_display1(arrFruit1, document.getElementById("fruitDisplay1"));
+				
+				arrFruit2.push(addVal.trim());
+				func_display2(arrFruit2, document.getElementById("fruitDisplay2"));
+			}
+		});
+		
+		
+		//----------------------------------------------------------------------------------------
+		// 배열의 맨 마지막 요소인 과일을 삭제하기 
+		var btnLastDel = document.getElementById("btnLastDel");
+		btnLastDel.addEventListener('click', function() {
+			var delFruitName = arrFruit1.pop();	 // 배열명.pop() : 배열의 마지막 요소를 제거한 후, 제거한 요소를 반환
+			alert("배열 arrFruit1 에서" + delFruitName + "을(를) 삭제했습니다.");
+			func_display1(arrFruit1, document.getElementById("fruitDisplay1"));
+			
+			delFruitName = arrFruit2.pop();	 
+			alert("배열 arrFruit2 에서" + delFruitName + "을(를) 삭제했습니다.");
+			func_display2(arrFruit2, document.getElementById("fruitDisplay2"));			
+		});
+		
+		
+		//----------------------------------------------------------------------------------------
+		// 배열의 맨 처음에 과일을 추가하기
+		var btnFirstAdd = document.getElementById("btnFirstAdd");
+		
+		btnFirstAdd.addEventListener('click', function(){
+			
+			// input 태그에서 입력되어지는값은 innerText가 아니라 value값이다.
+			var addVal = document.getElementById("addVal").value;
+			
+			if(addVal.trim() == ""){
+				alert("과일명을 입력하세요.");
+				return;	// 이 function을 종료하겠다는 의미!
+			}
+			else {
+				// 배열명.unshift() : 배열의 맨 처음에 새로운 요소를 추가한 후, 변경된 배열의 길이를 반환해줌.
+				arrFruit1.unshift(addVal.trim());
+				func_display1(arrFruit1, document.getElementById("fruitDisplay1"));
+				
+				arrFruit2.unshift(addVal.trim());
+				func_display2(arrFruit2, document.getElementById("fruitDisplay2"));
+			}
+		});
+		
+		
+		//----------------------------------------------------------------------------------------
+		// 배열의 맨 처음 요소인 과일을 삭제하기 
+		var btnFirstDel = document.getElementById("btnFirstDel");
+		btnFirstDel.addEventListener('click', function() {
+			var delFruitName = arrFruit1.shift();	 // 배열명.shift() : 배열의 첫 요소를 제거한 후, 제거한 요소를 반환
+			alert("배열 arrFruit1 에서" + delFruitName + "을(를) 삭제했습니다.");
+			func_display1(arrFruit1, document.getElementById("fruitDisplay1"));
+			
+			delFruitName = arrFruit2.shift();	 
+			alert("배열 arrFruit2 에서" + delFruitName + "을(를) 삭제했습니다.");
+			func_display2(arrFruit2, document.getElementById("fruitDisplay2"));			
+		});
+		
+		
+		//----------------------------------------------------------------------------------------
+		// 배열의 특정 위치에 과일 추가하기
+		var btnAdd2 = document.getElementById("btnAdd2");
+		btnAdd2.addEventListener('click', function() {
+			
+			/*
+			- 배열명.splice() : 배열의 특정 위치에 배열 요소를 추가하거나 삭제하는데 사용한다. 리턴값은 삭제한 배열 요소이다. 삭제한 요소가 없으면 빈 배열( [] )을 반환한다.
+	        
+			- 배열명.splice(start, 0, element);  // 배열의 특정 위치에 배열 요소를 추가하는 경우 
+	          start   - 수정할 배열 요소의 인덱스
+	          0       - 요소를 추가할 경우
+	          element - 배열에 추가될 요소
+	         */
+	    	
+			var addArr1 = arrFruit1.splice(2, 0, "밤","감","대추");
+			var addArr2 = arrFruit2.splice(2, 0, "밤","감","대추");
+	        
+			console.log(addArr1);
+			console.log(addArr2);
+			
+			func_display1(arrFruit1, document.getElementById("fruitDisplay1"));	// [] 삭제한 요소가 없으므로 빈배열을 반환
+			func_display1(arrFruit2, document.getElementById("fruitDisplay2")); // [] 삭제한 요소가 없으므로 빈배열을 반환
+		});
+		
+		
+		//----------------------------------------------------------------------------------------
+		// 배열의 특정 위치에 과일 삭제하기 
+		var btnDel2 = document.getElementById("btnDel2");
+		btnDel2.addEventListener('click', function() {
+			
+			/*
+			- 배열명.splice() : 배열의 특정 위치에 배열 요소를 추가하거나 삭제하는데 사용한다. 리턴값은 삭제한 배열 요소이다. 삭제한 요소가 없으면 빈 배열( [] )을 반환한다.
+	        
+	        - 배열명.splice(start, deleteCount); // 배열의 특정 위치의 배열 요소를 삭제하는 경우    
+	          start   - 수정할 배열 요소의 인덱스
+	          eleteCount - 삭제할 요소 개수
+	         */
+	    	
+			var addArr1 = arrFruit1.splice(1, 3);
+			var addArr2 = arrFruit2.splice(1, 3);
+	        
+			console.log(addArr1);	// 배열 요소가 삭제 되었으므로 리턴 값은 삭제한 배열 요소가 나온다.
+			console.log(addArr2);	// 배열 요소가 삭제 되었으므로 리턴 값은 삭제한 배열 요소가 나온다.
+			
+			func_display1(arrFruit1, document.getElementById("fruitDisplay1"));	// ["딸기", "메론", "참외"] 반환
+			func_display1(arrFruit2, document.getElementById("fruitDisplay2")); // ["딸기", "메론", "참외"] 반환
+		});
+		
+		
+		//----------------------------------------------------------------------------------------
+		// 배열의 요소를 역순으로 만들기
+		var btnReverse = document.getElementById("btnReverse");
+		btnReverse.addEventListener('click', function(){
+			arrFruit1.reverse();	// 배열이름.reverse() : 배열 요소를 역순을 만든다.
+			arrFruit2.reverse();
+			
+			func_display1(arrFruit1, document.getElementById("fruitDisplay1"));	
+			func_display1(arrFruit2, document.getElementById("fruitDisplay2"));
+		});
+		
+		
+		//----------------------------------------------------------------------------------------
+		// 배열의 요소를 오름차순으로 정렬하기
+		var btnAscSort = document.getElementById("btnAscSort");
+		btnAscSort.addEventListener('click', function(){
+			arrFruit1.sort();	// 배열이름.sort() : 기본적으로 배열의 요소를 문자열로 변환한 후, 오름차순으로 정렬한다. 
+			arrFruit2.sort(); 
+			
+			func_display1(arrFruit1, document.getElementById("fruitDisplay1"));	
+			func_display1(arrFruit2, document.getElementById("fruitDisplay2"));
+		});
+		
+		// 배열의 요소를 내림차순으로 정렬하기
+		var btnDescSort = document.getElementById("btnDescSort");
+		btnDescSort.addEventListener('click', function(){
+			arrFruit1.sort().reverse();	// 배열이름.sort().reverse() : 기본적으로 배열의 요소를 문자열로 변환한 후, 오름차순으로 정렬한 것을 거꾸로 바꿔주면 된다. 
+			arrFruit2.sort().reverse(); 
+			
+			func_display1(arrFruit1, document.getElementById("fruitDisplay1"));	
+			func_display1(arrFruit2, document.getElementById("fruitDisplay2"));
+		});
+		
+		
+		//----------------------------------------------------------------------------------------
+		// 배열에 있는 요소를 하나의 문자열로 반환해주는 JOIN
+		var arrNum = [10, 1, 50, 11, 109, 1004, 20]
+		
+		// 배열명.join("구분문자") : 구분문자를 사용해서 배열을 하나의 문자열로 만들어 반환해주는 것이다. 만약에 구분문자가 없다면, 구분문자는 콤마로 되어진다.
+		// var sNum = arrNum.join(" / ");		// "10 / 1 / 50 / 11 / 109 / 1004 / 20" 
+		var sNum = arrNum.join(" , ");			// "10 , 1 , 50 , 11 , 109 , 1004 , 20" 
+		// var sNum = arrNum.join();			// "10,1,50,11,109,1004,20"
+		
+		var numberDisplay = document.getElementById("numberDisplay");
+		numberDisplay.innerHTML = sNum;
+		
+		
+		//----------------------------------------------------------------------------------------
+		// 배열의 요소 숫자를 오름차순 정렬(틀린 것)_배열 안의 원소들은 숫자배열인데 sort()정렬은 문자열 기준 오름차순 정렬이 되므로 제대로 정렬이 되지 않는다.
+		var btnAscSortNumFail = document.getElementById("btnAscSortNumFail");
+		btnAscSortNumFail.addEventListener('click', function(){
+			numberDisplay.innerHTML = arrNum.sort().join(" , ");	// 1 , 10 , 1004 , 109 , 11 , 20 , 50 <= 오답. 
+		});
+		
+		// 배열의 요소 숫자를 오름차순 정렬(올바른 것)
+		var btnAscSortNumGood = document.getElementById("btnAscSortNumGood");
+		btnAscSortNumGood.addEventListener('click', function(){
+			
+			/* 배열요소가 숫자인 경우 문자열이 아닌 숫자로 오름차순 정렬하고자 할 경우 sort() 괄호 속에 function(a,b){return a-b;} 을 넣어줌으로써 해결해준다.
+	           - return a-b; 의 결과값이 음수 이라면  a 가 낮은 인덱스로 정렬된다.
+	           - return a-b; 의 결과값이  0 이라면  a 와 b 의 순서는 바뀌지 않는다.
+	           - return a-b; 의 결과값이 양수 이라면  b 가 낮은 인덱스로 정렬된다.	
+	        */
+			numberDisplay.innerHTML = arrNum.sort(function(a,b){return a-b;}).join(" , ");
+		});
+		
+		// 배열 요소 숫자를 내림차순 정렬(올바른 것)
+		var btnDescSortNumGood = document.getElementById("btnDescSortNumGood");
+		btnDescSortNumGood.addEventListener('click', function(){
+			
+			/* 배열요소가 숫자인 경우 문자열이 아닌 숫자로 내림차순 정렬하고자 할 경우 sort() 괄호 속에 function(a,b){return b-a;} 을 넣어줌으로써 해결해준다. */
+			numberDisplay.innerHTML = arrNum.sort(function(a,b){return b-a;}).join(" , ");
+		});
+		
+		
+		//----------------------------------------------------------------------------------------
+		// 배열의 일부분을 잘라내서 새로운 배열로 만들기 
+		var arrFood = ["치킨", "피자", "볶음밥", "라면", "탕수육", "육개장"];
+		var sFoods = arrFood.join();		// "치킨","피자","볶음밥","라면","탕수육","육개장"
+		document.getElementById("foodDisplay").innerHTML = sFoods;
+		
+		var btnSlice1 = document.getElementById("btnSlice1");
+		btnSlice1.addEventListener('click', function(){
+			// 배열명.slice() 메서드는 인수를 통해 지정한 만큼의 요소를 잘라낸 후 배열로 반환해준다. 잘라내어진 원본 배열은 잘라낸 만큼 줄어드는 것이 아니라 그대로 이다.			     
+	                      
+			// 이때 첫 번째 인자는 잘라낼 위치의 인덱스 숫자를 지정하며, 두 번째 인자의 인덱스 숫자의 바로 앞 요소까지를 잘라낼 요소로 지정한다. 
+	    	var arr1 = arrFood.slice(1,5);	// 피자 ~ 탕수육까지 자르기!
+	    	document.getElementById("sliceDisplay").innerHTML = arr1.join();	
+		});
+		
+		
+		var btnSlice2 = document.getElementById("btnSlice2");
+		btnSlice2.addEventListener('click', function(){
+
+			// 이때 첫 번째 인자는 잘라낼 위치의 인덱스 숫자를 지정하며, 두 번째 인자가 없으면 끝가지 잘라낸다. 
+	    	var arr1 = arrFood.slice(2);	// 볶음밥 ~ 끝까지 자르기!
+	    	document.getElementById("sliceDisplay").innerHTML = arr1.join();
+		});
+		
+		
+		//----------------------------------------------------------------------------------------
+		// 배열속의 데이터 index값 알아오기 시작 
+		var arrData = [9, "java", 100, true, 9, "html", "java"];
+        var n1 = arrData.indexOf(9,0);          // 0      // 배열명.indexOf(찾을value값, 출발index번호);
+        var n2 = arrData.indexOf(9);            // 0      // 출발 index가 없으면 ,0이 생략되어 있는 거와 같다. 
+        var n3 = arrData.indexOf("java");       // 1
+        var n4 = arrData.indexOf("java",2);     // 6
+        var n5 = arrData.indexOf(true);         // 3
+        var n6 = arrData.lastIndexOf("java");   // 6      // 배열명.lastIndexOf(찾을value값, 출발index번호);
+        var n7 = arrData.lastIndexOf("html");   // 5      // ==> 출발index번호 부터 역순으로 검색하여 가장 먼저 찾은 요소의 인덱스를 반환해준다.
+        var n8 = arrData.lastIndexOf("html",6); // 5 
+        var n9 = arrData.lastIndexOf("html",4); // -1 
+        var n10 = arrData.indexOf("oracle");    // -1  	  // 찾을 값이 없으면 -1 을 반환해준다.
+        
+        var btnIndexOf = document.getElementById("btnIndexOf");
+        btnIndexOf.addEventListener('click', function(event){
+        	document.getElementById("dataDisplay").innerHTML = n1 +", "+n2+", "+n3+", "+n4+", "+n5+", "+n6+", "+n7+", "+n8+", "+n9+", "+n10;
+        });
+        
+        var arrStr = ["computer","clock","mouse","keyboard","korea","oracle"];
+        document.getElementById("sourceDisplay").innerHTML = arrStr.join();
+        
+        var btnforEach = document.getElementById("btnforEach");
+        btnforEach.addEventListener('click', function(event){
+        	/*
+        		배열명.forEach(function(item, index, array){});
+        		- item : 현재 처리중인 배열의 각 요소_필수
+        		- index : (optional) 처리 중인 요소의 인덱스_선택적
+        		- array : forEach()가 적용되어지고 있는 배열_선택적
+        	*/
+        	var arrResult = [];
+        	// 향상된 for문과 동일 배열의 길이 만큼 반복되어진다.
+        	arrStr.forEach(function(item, index, array){
+        		var str = item.substring(1,2);
+        		console.log(str);
+        		
+        		if(str == "o"){
+        			arrResult.push(item);
+        		}
+        	});
+        	
+        	document.getElementById("forEachDisplay").innerHTML = arrResult.join();
+        });
+	}
+	
+	// window.onload 밖에서 함수를 정의할 때!
+	function func_display1(arr, displayid){
+		
+		var html = "<ol>";
+		for(var i=0; i<arr.length; i++){
+			html += "<li>" + arr[i] + "</li>";
+		}
+		html += "</ol>";
+		
+		displayid.innerHTML = html;
+	} 
+	
+	
+</script>
+
+</head>
+<body>
+
+	<h2>내가 좋아하는 과일</h2>
+	<div class="display" id="fruitDisplay1"></div>
+	<div class="display" id="fruitDisplay2"></div>
+	
+	<div>
+		<!-- 페이지 새로고침의 두가지 방법 --> 
+		<button type="button" onclick="javascript:history.go(0)"> 처음부터 다시1</button>
+		<button type="button" onclick="javascript:location.reload()"> 처음부터 다시2</button>
+		<br>
+		<br>
+		추가할 과일명 : <input type="text" id="addVal"/>	
+		
+		<!-- 마지막 과일 추가 및 삭제 -->
+		<br>
+		<br>
+		<button type="button" id="btnLastAdd">과일을 맨 마지막에 추가하기[push()]</button>
+		<button type="button" id="btnLastDel">마지막 과일 삭제하기[pop()]</button>
+		 
+		<!-- 배열의 맨 처음에 과일 추가 및 삭제 -->
+		<br>
+		<br>
+		<button type="button" id="btnFirstAdd">과일을 맨 처음에 추가하기[unshift()]</button>
+		<button type="button" id="btnFirstDel">맨 처음 과일 삭제하기[shift()]</button>
+		
+		<!-- 배열의 특정 위치의 과일 추가 및 삭제 -->
+		<br>
+		<br>
+		<button type="button" id="btnAdd2">딸기와 메론 사이에 &quot;밤, 감, 대추&quot; 추가하기[splice()]</button>
+		<button type="button" id="btnDel2">딸기부터 3개 요소 삭제하기[splice()]</button>
+		
+		<!-- 배열의 요소를 역순으로 만들기 -->
+		<br>
+		<br>
+		<button type="button" id="btnReverse">배열의 요소를 역순으로 만들기[reverse()]</button>
+		
+		<!-- 배열의 요소를 오름차순 및 내림자순으로 정렬하기 -->
+		<br>
+		<br>
+		<button type="button" id="btnAscSort">배열의 요소를 오름차순 정렬[sort()]</button>
+		<button type="button" id="btnDescSort">배열의 요소를 내림차순 정렬[sort()]</button>
+		
+		<hr style="border: solid 1px red;"/>
+		
+		<!-- 배열에 있는 요소를 하나의 문자열로 반환 -->
+		<h2>숫자 배열</h2>
+		<div id="numberDisplay"></div>
+		<br>
+		
+		<!-- 숫자 배열 정렬 -->
+		<div>
+			<button type="button" onclick="javascript:location.reload()"> 처음부터 다시</button>
+			<br><br>
+			<button type="button" id="btnAscSortNumFail">배열의 요소 숫자를 오름차순 정렬(틀린 것)</button>
+			<br><br>
+			<button type="button" id="btnAscSortNumGood">배열의 요소 숫자를 오름차순 정렬(올바른 것)</button>
+			<br><br>
+			<button type="button" id="btnDescSortNumGood">배열의 요소 숫자를 내림차순 정렬(올바른 것)</button>
+		</div>
+		
+		<hr style="border: solid 1px red;"/>
+		
+		<!-- 배열의 일부분을 잘라내서 새로운 배열로 만들기  -->
+		<h2>음식배열</h2>
+		<div id="foodDisplay"></div>
+		<div id="sliceDisplay"></div>
+		<br/>
+		<div>
+			<button type="button" id="btnSlice1">피자부터 탕수육까지 잘라서 배열만들기[slice()]</button>
+			<button type="button" id="btnSlice2">볶음밥부터 끝까지 잘라서 배열만들기[slice()]</button>
+		</div>
+		
+		<hr style="border: solid 1px red;"/>
+		
+		<h2>데이터배열</h2>
+		<div id="dataDisplay"></div>
+		<br/>
+		<div>
+			<button type="button" id="btnIndexOf">배열 요소의 index값 알아오기[indexOf()]</button>
+		</div>
+		
+		<h2>배열요소중 두번째 문자가 &apos;o&apos;인 것만 추출하기</h2>
+		<div id="sourceDisplay"></div>
+		<div id="forEachDisplay"></div>
+		<br/>
+		<div>
+			<button type="button" id="btnforEach">배열요소중 두번째 문자가 &apos;o&apos;인 것만 추출하기[forEach()]</button>
+		</div>
+		
+	</div>
+
+</body>
+</html>

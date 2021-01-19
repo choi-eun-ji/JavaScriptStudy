@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<style type="text/css">
+
+	div#container {
+		width: 90%;
+		margin: 0 auto;
+		padding: 2%;
+	}
+	
+	table, tr, td {
+		border: solid 1px gray;
+		border-collapse: collapse;
+	}
+	
+	td {
+		width: 200px;
+		height: 50px;
+		text-align: center;
+	}
+</style>
+<script type="text/javascript">
+
+	var clock;
+	var start = 0;
+	var cnt = 0;
+	
+	window.onload = function() {
+		
+		func_loopTimer();
+		
+		var btnDelay = document.getElementById("btnDelay");
+		
+		// 연장 버튼을 눌렀을때 이벤트 리스너
+		btnDelay.addEventListener("click", function() {
+			
+				if(start < 0){
+					alert("로그아웃 된 이후에는 시간연장이 불가합니다.")
+				}
+				else {
+					cnt = 0;
+				}			
+		});
+		
+	}
+	
+	// 타이머를 화면에 보이게 하는 함수
+	function func_timer(i) {
+		start = 1*60 - i;
+		
+		// console.log(start+" "+cnt);
+		
+		// 분을 화면에 보이게 한다.
+		if(start >= 0){
+			
+			var minute = "";
+			
+			// 10분 미만인경우 앞에 0을 붙여준다.
+			if(start < 600){
+				minute = "0";
+			}
+			
+			// javascript에서는 / : 몫과 나머지가 다 나온다. 
+			minute += parseInt(start / 60); // parseInt(소수인. 뒤를 제외하고 오직 정수만 가져온다.) 
+			
+			// % : 나머지 반환
+			var second = start % 60; 
+			second = (second < 10) ? "0"+second : second;
+			
+			
+			document.getElementById("timer").innerHTML = minute + ":" + second;
+		}
+		else {
+			alert("시간 종료로 로그아웃 되었습니다.");
+			// return 0;
+			
+			// ClearTimeout(clock);
+			return;
+		}
+	}
+	
+	// 1초마다 타이머를 늦추는 함수
+	function func_loopTimer() {
+		
+		func_timer(cnt++);	// 후위 연산자 이므로 처음에 0 그 다음에 1, 2, 3...  
+		
+		//if(result == 0){
+		//	return;
+		//}
+		
+		if(start >= 0){
+			clock = setTimeout('func_loopTimer()', 1000);
+		}
+	}
+	
+	function func_Finish() {
+		
+		alert("강제 종료 합니다.");
+		clearTimeout(clock);
+	}
+</script>
+</head>
+<body>
+	<div id="container">
+		<table>
+			<tr>
+				<td>남은시간</td>
+				<td>
+					<span id="timer"></span>	
+					<button type="button" id="btnDelay">연장</button> 	<!-- 연장 버튼을 누르면 5분 더 연장 -->
+				</td>
+			</tr>
+			
+			<tr>
+				<td>강제종료</td>
+				<td>
+					<button type="button" onclick="func_Finish()">종료</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

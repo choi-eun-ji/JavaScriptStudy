@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>객관식 시험문제 만들기</title>
+
+<style type="text/css">	
+	
+	div#container {
+		margin-left: 50px;
+	}
+	
+	div#bottom {
+		margin-bottom: 35px;
+	}
+	
+	input[type=text]{
+		border: none;
+	} 
+	
+	li.re {
+		list-style-type: none;
+		width: 80px;
+		height: 40px;
+		padding-left: 10px;
+		padding-top: 10px;
+	}
+	
+	li.re > input {
+		color: blue;
+		font-weight: bold;
+		font-size: 13pt;
+	}
+	
+	div > input {
+		color: red;
+		padding-left: 15px;
+		font-size: 13pt;
+	}
+	
+	input#score {
+		color: black;
+		font-size: 20pt;
+		padding-left: 20pt;
+		font-weight: bold;
+	}
+	
+	div#divtimer {
+		margin: 20px 0 30px 0;
+	}
+	
+	div#divtimer > label {
+		font-size: 17pt;
+	}
+	
+	div#divtimer > span {
+		font-size: 17pt;
+		color: blue;
+		font-weight: bold;
+	}
+	
+</style>
+
+<script type="text/javascript">
+
+	var cnt = 0;
+	var timecnt = 0;
+	var start = 0;
+	var clock;
+	
+	window.onload = function() {
+	    func_loop();
+		var submits = document.getElementById("submits");
+		
+		
+		submits.addEventListener("click", function() {
+
+			alert("제출 완료 했습니다.");
+			var result="";
+			
+			clearTimeout(clock);
+			document.getElementById("time").innerHTML = "00 : 00";
+			
+			// 첫번째 문제.
+			result = func_rdovalue("bloodtype");
+			func_check("q1", result, "result1", "resultli");
+			
+			// 두번째 문제.
+			result = func_rdovalue("common");
+			func_check("q2", result, "result2", "resultli2");
+			
+			// 세번째 문제.
+			result = func_rdovalue("spelling");
+			func_check("q3", result, "result3", "resultli3");
+			
+			// 네번째 문제.
+			result = func_rdovalue("math");
+			func_check("q4", result, "result4", "resultli4");
+			
+			// 다섯번째 문제.
+			result = func_rdovalue("food");
+			func_check("q5", result, "result5", "resultli5");
+			
+			// 여섯번째 문제.
+			result = func_rdovalue("programming");
+			func_check("q6", result, "result6", "resultli6");
+			
+			// 일곱번째 문제.
+			result = func_rdovalue("sports");
+			func_check("q7", result, "result7", "resultli7");
+			
+			// 여덟번째 문제.
+			result = func_rdovalue("mean");
+			func_check("q8", result, "result8", "resultli8");
+			
+			// 아홉번째 문제.
+			result = func_rdovalue("apple");
+			func_check("q9", result, "result9", "resultli9");
+			
+			// 열번째 문제.
+			result = func_rdovalue("fruit");
+			func_check("q10", result, "result10", "resultli10");
+			
+			// 점수
+			var score = document.getElementById("score");
+			var scresult = 100 - (10 * cnt);
+			score.value = scresult + "점";
+		});
+	}
+	
+	// 라디오 버튼에서 선택된 값을 반환해주는 함수
+	function func_rdovalue(name){
+		var result="";
+		var names = document.getElementsByName(name);
+		for(var i=0; i<names.length; i++){
+			if(names[i].checked == true){
+				result = names[i].value;
+			}
+		}
+		return result;
+	}
+	
+	// 선택한 값과 답을 비교하여 채점을 해주는 함수
+	function func_check(quiz, result, tagid, liid){
+		var q = document.getElementById(quiz);
+		
+		if(q.value == result){
+			document.getElementById(liid).style.display="";
+			document.getElementById(tagid).value = "O";
+		}
+		else{
+			cnt = cnt +1;
+			document.getElementById(liid).style.display="";
+			document.getElementById(tagid).value = "X";
+			document.getElementById(tagid).style.color="red";
+		}
+		q.style.display="";
+	}
+	
+	// 타이머 시간을 화면에 보여주는 함수
+	function func_timer(i) {
+		
+		start = 5*60 - i;
+		
+		// javascript에서는 /를 하면 몫과 나머지가 모두 나온다.
+		var minute = parseInt(start / 60);
+		var second = start % 60;
+		
+		if(minute < 10) {
+			minute = "0"+minute;
+		}
+		if(second < 10) {
+			second = "0"+second;
+		}
+		var sTime = minute + " : " + second;
+		
+		document.getElementById("time").innerHTML = sTime;
+	}
+	
+	// 1초씩 타이머를 감소시키는 함수
+	function func_loop() {
+		func_timer(timecnt++);
+		
+		if(start >= 0){
+			clock = setTimeout("func_loop()", 1000);	
+		}
+		else{
+			alert("시간이 종료되었습니다. 제출 버튼을 눌러주세요.");
+			document.getElementById("time").innerHTML = "00:00";
+		}
+	}
+	
+</script>
+</head>
+
+<body>
+	<div id="container">
+		<div id="divtimer">
+			<label for="timer">남은 시간 : </label>
+			<span id="time"></span>
+		</div>
+		<div>
+			[문제1] 다음중 사람의 혈액형이 아닌것은? <input type="text" value="4" id="q1" style="display: none;"/>
+			<ol>
+				<li>
+					<label for="btype1">A</label>
+					<input type="radio" name="bloodtype" id="a" value="1"/>
+				</li>
+				<li>
+					<label for="btype2">B</label>
+					<input type="radio" name="bloodtype" id="b" value="2"/>
+				</li>
+				<li>
+					<label for="btype3">C</label>
+					<input type="radio" name="bloodtype" id="c" value="3"/>
+				</li>
+				<li>
+					<label for="btype4">D</label>
+					<input type="radio" name="bloodtype" id="d" value="4"/>
+				</li>
+				<li id="resultli" class="re" style="display: none;">
+					<input type="text" id="result1" />
+				</li>
+			</ol>
+		</div>
+		
+		<div>
+			[문제2] 다음중 서로간의 공통점이 없는 것은? <input type="text" id="q2" value="1" style="display: none;" />
+			
+			<ol>
+				<li>
+					<label for="common1">신발</label>
+					<input type="radio" name="common" id="shoes" value="1"/>
+				</li>
+				<li>
+					<label for="common2">수박</label>
+					<input type="radio" name="common" id="watermelon" value="2"/>
+				</li>
+				<li>
+					<label for="common3">라면</label>
+					<input type="radio" name="common" id="ramen" value="3"/>
+				</li>
+				<li>
+					<label for="common4">상추</label>
+					<input type="radio" name="common" id="lettus" value="4"/>
+				</li>
+				
+				<li id="resultli2" class="re" style="display: none;">
+					<input type="text" id="result2" />
+				</li>
+			</ol>
+		</div>
+		
+		<div>
+			[문제3] 다음중 철자가 맞는것은? <input type="text" id="q3" value="4" style="display: none;"/>
+			<ol>
+				<li>
+					<label for="spelling1">comfuter</label>
+					<input type="radio" name="spelling" id="radio" value="1"/>
+				</li>
+				<li>
+					<label for="spelling2">muose</label>
+					<input type="radio" name="spelling" id="mouse" value="2"/>
+				</li>
+				<li>
+					<label for="spelling3">keyboad</label>
+					<input type="radio" name="spelling" id="keyboard" value="3"/>
+				</li>
+				<li>
+					<label for="spelling4">browser</label>
+					<input type="radio" name="spelling" id="browser" value="4"/>
+				</li>
+				<li id="resultli3" class="re" style="display: none;">
+					<input type="text" id="result3" />
+				</li>
+			</ol>
+		</div>
+		
+		<div>
+			[문제4] 다음중 틀린것은? <input type="text" id="q4" value="2" style="display: none;"/>
+			<ol>
+				<li>
+					<label for="math1">10+2=12</label>
+					<input type="radio" name="math" id="math1" value="1"/>
+				</li>
+				<li>
+					<label for="math2">10-2*0=0</label>
+					<input type="radio" name="math" id="math2" value="2"/>
+				</li>
+				<li>
+					<label for="math3">2-1*2=0</label>
+					<input type="radio" name="math" id="math3" value="3"/>
+				</li>
+				<li>
+					<label for="math4">4/2=2</label>
+					<input type="radio" name="math" id="math4" value="4"/>
+				</li>
+				<li id="resultli4" class="re" style="display: none;">
+					<input type="text" id="result4" />
+				</li>
+			</ol>
+		</div>
+		
+		<div>
+			[문제5] 다음중 음식이 아닌것은? <input type="text" id="q5" value="3" style="display: none;"/>
+			<ol>
+				<li>
+					<label for="food1">치킨</label>
+					<input type="radio" name="food" id="chicken" value="1"/>
+				</li>
+				<li>
+					<label for="food2">피자</label>
+					<input type="radio" name="food" id="pizza" value="2"/>
+				</li>
+				<li>
+					<label for="food3">책</label>
+					<input type="radio" name="food" id="book" value="3"/>
+				</li>
+				<li>
+					<label for="food4">빵</label>
+					<input type="radio" name="food" id="bread" value="4"/>
+				</li>
+				<li id="resultli5" class="re" style="display: none;">
+					<input type="text" id="result5" />
+				</li>
+			</ol>
+		</div>
+		
+		<div>
+			[문제6] 다음중 프로그래밍 언어가 아닌것은? <input type="text" id="q6" value="4" style="display: none;"/>
+			<ol>
+				<li>
+					<label for="programming1">C++</label>
+					<input type="radio" name="programming" id="c" value="1"/>
+				</li>
+				<li>
+					<label for="programming2">Java</label>
+					<input type="radio" name="programming" id="java" value="2"/>
+				</li>
+				<li>
+					<label for="programming3">Python</label>
+					<input type="radio" name="programming" id="python" value="3"/>
+				</li>
+				<li>
+					<label for="programming4">English</label>
+					<input type="radio" name="programming" id="english" value="4"/>
+				</li>
+				<li id="resultli6" class="re" style="display: none;">
+					<input type="text" id="result6" />
+				</li>
+			</ol>
+		</div>
+		
+		<div>
+			[문제7] 다음중 팀별 스포츠가 아닌것은? <input type="text" id="q7" value="1" style="display: none;"/>
+			<ol>
+				<li>
+					<label for="sports1">높이뛰기</label>
+					<input type="radio" name="sports" id="highjump" value="1"/>
+				</li>
+				<li>
+					<label for="sports2">야구</label>
+					<input type="radio" name="sports" id="baseball" value="2"/>
+				</li>
+				<li>
+					<label for="sports3">농구</label>
+					<input type="radio" name="sports" id="basketball" value="3"/>
+				</li>
+				<li>
+					<label for="sports4">축구</label>
+					<input type="radio" name="sports" id="soccer" value="4"/>
+				</li>
+				<li id="resultli7" class="re" style="display: none;">
+					<input type="text" id="result7" />
+				</li>
+			</ol>
+		</div>
+		
+		<div>
+			[문제8] 다음중 의미가 다른것은? <input type="text" id="q8" value="4" style="display: none;"/>
+			<ol>
+				<li>
+					<label for="mean1">1</label>
+					<input type="radio" name="mean" id="one1" value="1"/>
+				</li>
+				<li>
+					<label for="mean2">one</label>
+					<input type="radio" name="mean" id="one2" value="2"/>
+				</li>
+				<li>
+					<label for="mean3">첫째</label>
+					<input type="radio" name="mean" id="one3" value="3"/>
+				</li>
+				<li>
+					<label for="mean4">시간</label>
+					<input type="radio" name="mean" id="time" value="4"/>
+				</li>
+				<li id="resultli8" class="re" style="display: none;">
+					<input type="text" id="result8" />
+				</li>
+			</ol>
+		</div>
+		
+		<div>
+			[문제9] 다음중 애플 제품이 아닌것은? <input type="text" id="q9" value="2" style="display: none;"/>
+			<ol>
+				<li>
+					<label for="apple1">아이폰</label>
+					<input type="radio" name="apple" id="iphone" value="1"/>
+				</li>
+				<li>
+					<label for="apple2">갤럭시</label>
+					<input type="radio" name="apple" id="galaxy" value="2"/>
+				</li>
+				<li>
+					<label for="apple3">아이패드</label>
+					<input type="radio" name="apple" id="ipad" value="3"/>
+				</li>
+				<li>
+					<label for="apple4">에어팟</label>
+					<input type="radio" name="apple" id="airpods" value="4"/>
+				</li>
+				<li id="resultli9" class="re" style="display: none;">
+					<input type="text" id="result9" />
+				</li>
+			</ol>
+		</div>
+		
+		<div>
+			[문제10] 다음중 미녀가 좋아하는 과일은? <input type="text" id="q10" value="3" style="display: none;"/>
+			<ol>
+				<li>
+					<label for="fruit1">사과</label>
+					<input type="radio" name="fruit" id="apple" value="1"/>
+				</li>
+				<li>
+					<label for="fruit2">자몽</label>
+					<input type="radio" name="fruit" id="grapefruit" value="2"/>
+				</li>
+				<li>
+					<label for="fruit3">석류</label>
+					<input type="radio" name="fruit" id="pomegranate" value="3"/>
+				</li>
+				<li>
+					<label for="fruit4">참외</label>
+					<input type="radio" name="fruit" id="melon" value="4"/>
+				</li>
+				<li id="resultli10" class="re" style="display: none;">
+					<input type="text" id="result10" />
+				</li>
+			</ol> 
+		</div>
+		<div id= "bottom">
+			<button type="button" id="submits">제출</button>
+			<input type="text" id="score"/>
+		</div>			
+	</div>
+</body>
+
+</html>

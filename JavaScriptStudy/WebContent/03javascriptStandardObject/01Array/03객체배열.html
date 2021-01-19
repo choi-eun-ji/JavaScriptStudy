@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+
+<style type="text/css">
+
+	table {
+		border: solid 1px gray;
+		width:300px;
+		min-height: 250px;
+		margin: 20px;
+		float: left;
+	}
+	
+	.title {
+		font-weight: bold;
+		color: blue;
+	}
+	
+	.special {
+		font-weight: bold;
+		color: red;
+	}
+	
+	.center {
+		text-align: center;
+	}
+</style>
+
+</head>
+<body>
+
+   <div>
+      <button type="button" id="show">보이기</button>
+      <button type="button" id="hide1">감추기1</button>
+      <button type="button" id="hide2">감추기2</button>
+   </div>
+   <div id="display"></div>
+
+   <script type="text/javascript">
+      window.onload = function() {
+
+         var arrPerson = [ {
+            name : "아이유",
+            photo : "iyou.jpg",
+            age : 20,
+            address : "서울시 강동구",
+            special : "가수 겸 탤런트<br>팬들이 많음"
+         }, {
+            name : "김태희",
+            photo : "kimth.jpg",
+            age : 30,
+            address : "서울시 강서구",
+            special : "탤런트<br>팬들이 많음"
+         }, {
+            name : "박보영",
+            photo : "barkby.jpg",
+            age : 40,
+            address : "서울시 강남구",
+            special : "탤런트<br>팬들이 많음"
+         } ];
+         
+         var html = "";
+         
+         arrPerson.forEach(function(item, index, array) {
+            html += "<table>" +
+                     "<tr>" +
+                        "<td rowspan='3'><img src='images/"+ item.photo + "'></td>" +
+                        "<td class='title'>성명</td>" +
+                        "<td>" + item.name + "</td>" +
+                     "</tr>" +
+                     
+                     "<tr>" +
+                        "<td class='title'>나이</td>" +
+                        "<td>" + item.age + "</td>" +
+                     "</tr>" +
+                     
+                     "<tr>" +
+                        "<td class='title'>주소</td>" +
+                        "<td>" + item.address + "</td>" +
+                     "</tr>" +
+                     
+                     "<tr>" +
+                        "<td colspan='3' class='special center' >특이사항</td>" +
+                     "</tr>" +
+                     
+                     "<tr>" +
+                        "<td colspan='3' class='center'>" + item.special + "</td>" +
+                     "</tr>" +
+                  "</table>";
+         });
+
+         var show = document.getElementById("show");
+         var hide1 = document.getElementById("hide1");
+         var hide2 = document.getElementById("hide2");
+
+         show.addEventListener("click", function() {
+        	 /* 화면을 보이지 말아라 ! 했을때, none 사용 후 기본값을 줘야지 다시 보이기가 나타나진다. */ 
+        	 document.getElementById("display").style.display = "";	// ""은 현재 div의 display 기본값인 block으로 하겠다는 말이다.
+             document.getElementById("display").innerHTML = html;
+         });
+
+         hide1.addEventListener("click", function() {
+        	 document.getElementById("display").innerHTML = "";
+         });
+
+         hide2.addEventListener("click", function() {
+        	 /* 화면을 보이지 말아라 ! 했을때, none 사용 */
+        	 document.getElementById("display").style.display = "none";
+         });
+
+      }
+   </script>
+
+</body>
+</html>
